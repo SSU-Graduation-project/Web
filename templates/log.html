@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Log</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+<style>
+    .layer1, .layer2, .layer3 { display: none; }
+</style>
+{% extends "base2.html" %}
+{% block content %}
+<body>
+    <br>
+    <div>
+        <select id="selectBox" name="selectBox">
+            <option value="" selected="selected">select</option>
+            <option value="option1">log</option>
+            <option value="option2">outlier</option>
+            <option value="option3">timeseries</option>
+        </select>
+        <br>
+        <div class="layer1">
+            {% for n in log %}
+            {{ n | tojson }}<br>
+            {% endfor %}
+        </div>
+        <div class="layer2">
+            {% for n in outlier %}
+            {{ n | tojson }}<br>
+            {% endfor %}
+        </div>
+        <div class="layer3">
+            {% for n in timeseries %}
+            {{ n | tojson }}<br>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        $('#selectBox').change(function () {
+            var state = $('option:selected', this).val();
+            if (state == 'option1') {
+                $('.layer1').show();
+            } else {
+                $('.layer1').hide();
+            }
+            if (state == 'option2') {
+                $('.layer2').show();
+            } else {
+                $('.layer2').hide();
+            }
+            if (state == 'option3') {
+                $('.layer3').show();
+            } else {
+                $('.layer3').hide();
+            }
+        });
+    </script>
+</body>
+{% endblock %}
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;500;900&display=swap" rel="stylesheet">
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <title>Graphs</title>
+    <style>
+        .wrap {
+            width: 100%;
+            margin: 0 auto;
+            overflow-x: hidden;
+            background: #eee;
+            padding: 20px;
+        }
+
+        .nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .nav h2 {
+            margin-bottom: 20px;
+        }
+
+        input:nth-of-type(1) {
+            width: 180px;
+            height: 30px;
+        }
+
+        input:nth-of-type(2) {
+            width: 50px;
+            height: 30px;
+            font-size: 15px;
+        }
+
+        .row {
+            width: 100%;
+            background: #eee;
+        }
+
+        .col-md-12 {
+            height: 100%;
+            background: #fff;
+            font-size: 3rem;
+            padding: 5px;
+        }
+    </style>
+</head>
+{% extends "base2.html" %}
+{% block content %}
+<body>
+    <div class="wrap">
+        <div class="nav">
+            <h2>Charts</h2>
+            <form action = "http://localhost:5000/chart" method = "POST" enctype = "multipart/form-data">
+              <input class="data" type = "text" name = "text" />
+              <input type = "submit"/>
+          </form>
+        </div>
+        <h2><b>NUMERIC VALUE</b></h2>
+        <hr>
+        {% for n in num %}
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4><b>{{ titles[n] }}</b></h4>
+                        <canvas id='num_{{ n }}' width='80' height='30'></canvas>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+                        <script>
+                            var ctx = document.getElementById('num_{{ n }}').getContext('2d');
+                            var scatterChart = new Chart(ctx, {
+                                type: {{ type | tojson }},
+                                data: {
+                                    labels: {{ label | tojson }},
+                                    datasets: [{
+                                        label: {{ titles[n] | tojson }},
+                                        data: {{ values[n] | tojson }},
+                                        backgroundColor: 'rgb(255, 99, 132)',
+                                        fill: false, // line의 아래쪽을 색칠할 것인가?
+                                        borderColor: 'rgb(255, 99, 132)',
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        xAxes: [{
+                                            ticks: {
+                                                suggestedMin: 0,
+                                                suggestedMax: 100
+                                            }
+                                        }],
+                                        yAxes: [{
+                                            ticks: {
+                                                suggestedMin: -0.2,
+                                                suggestedMax: 1.2
+                                            }
+                                        }]
+                                    }
+                                }
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <hr>
+            <br>
+        {% endfor %}
+
+        <h2><b>CATEGORICAl VALUE</b></h2>
+        <hr>
+        {% for n in num2 %}
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4><b>{{ titles2[n] }}</b></h4>
+                        <canvas id='categ_{{ n }}' width='80' height='30'></canvas>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+                        <script>
+                            var ctx = document.getElementById('categ_{{ n }}').getContext('2d');
+                            var scatterChart = new Chart(ctx, {
+                                type: {{ type2 | tojson }},
+                                data: {
+                                    labels: {{ label2[n] | tojson }},
+                                    datasets: [{
+                                        label: {{ titles2[n] | tojson }},
+                                        data: {{ values2[n] | tojson }},
+                                        backgroundColor: 'rgb(255, 99, 132)',
+                                        fill: false, // line의 아래쪽을 색칠할 것인가?
+                                        borderColor: 'rgb(255, 99, 132)',
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        xAxes: [{
+                                            ticks: {
+                                                suggestedMin: 0,
+                                                suggestedMax: 100
+                                            }
+                                        }],
+                                        yAxes: [{
+                                            ticks: {
+                                                suggestedMin: -0.2,
+                                                suggestedMax: 1.2
+                                            }
+                                        }]
+                                    }
+                                }
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <hr>
+            <br>
+        {% endfor %}
+        </div>
+</body>
+        <style type="text/css">
+        .overLayer {
+            display: none;
+            width: 180px;
+            height: 80px;
+            border: 2px solid gray;
+            background-color:#FFF;
+            padding:10px;
+            font-size:12px;
+            line-height:15px;
+            font-weight:100
+        }
+        .tableLayer td {
+            height:30px
+        }
+        </style>
+        <script src="http://code.jquery.com/jquery-1.6.2.min.js" type="text/javascript"></script>
+        <script type="text/javascript">
+        $(function(){
+         $('.data').mouseover(function(e) { // mouse hover 좌표
+          $(this).mousemove(function(e) {
+           $('#divLayer #conttent').empty().append($(this).text());
+           var t=e.pageY-15;
+           var l=e.pageX+20;
+           $('#divLayer').css({"top":t, "left":l,"position":"absolute","opacity":"0,8" }).show();
+          });
+         });
+         $('.data').mouseout(function() {
+          $('#divLayer').hide();
+         });
+        });
+        </script>
+        <div id="divLayer" class="overLayer">
+          <div class="conttent">
+            <strong>Columns : {{ columns }}</strong> <span id="conttent"></span>
+          </div>
+        </div>
+</html>
+{% endblock %}
