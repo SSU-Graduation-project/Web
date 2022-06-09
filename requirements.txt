@@ -1,0 +1,3 @@
+flask
+git+https://github.com/LucasChun/SSU_AutoData.git
+seaborn
